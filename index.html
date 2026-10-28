@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andrés Carrizo — Strategy & Operations</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --text-main: #111111;
+    --text-muted: #666666;
+    --border: #e2e2e5;
+    --node-hover: #f3f3f5;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 100px 24px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    margin: 0 0 8px 0;
+  }
+  .subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    margin: 0 0 64px 0;
+  }
+
+  /* WORKFLOW DE NODOS */
+  .workflow {
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .workflow::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    bottom: 20px;
+    left: 6px;
+    width: 2px;
+    background-color: var(--border);
+  }
+
+  .node {
+    position: relative;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  
+  .node:hover {
+    background: var(--node-hover);
+    border-color: #d0d0d5;
+  }
+
+  .node::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: -28px;
+    width: 10px;
+    height: 10px;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    z-index: 2;
+    transition: all 0.3s ease;
+  }
+
+  .node.active {
+    border-color: var(--text-main);
+  }
+  
+  .node.active::before {
+    background: var(--text-main);
+    border-color: var(--text-main);
+  }
+
+  .node-header {
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .node-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  .node-role {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* CUERPO DESPLEGABLE */
+  .node-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .node.active .node-body {
+    grid-template-rows: 1fr;
+  }
+
+  .node-inner {
+    overflow: hidden;
+  }
+
+  .node-content {
+    padding: 0 24px 24px 24px;
+    font-size: 0.95rem;
+    color: #333333;
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+    padding-top: 16px;
+  }
+
+  .node-content p {
+    margin: 0 0 12px 0;
+  }
+
+  /* GRILLA DE MÉTRICAS */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+    margin-bottom: 12px;
+  }
+
+  .metric-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  .metric-value {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .metrics-tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    background: #eaeaea;
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: #444;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate { animation: fadeIn 0.8s ease forwards; }
+
+</style>
+</head>
+<body>
+
+  <div class="container animate">
+    
+    <!-- HEADER -->
+    <h1>Andrés Carrizo</h1>
+    <p class="subtitle">Strategic Planning & Operations. Systems, content architecture, and workflow design.</p>
+
+    <!-- WORKFLOW DE NODOS -->
+    <div class="workflow">
+      
+      <!-- NODO 1: RODAR ELECTRIC -->
+      <div class="node" onclick="toggleNode(this)">
+        <div class="node-header">
+          <h2 class="node-title">Rodar Electric</h2>
+          <span class="node-role">Sales Automation MVP</span>
+        </div>
+        <div class="node-body">
+          <div class="node-inner">
+            <div class="node-content">
+              <p><strong>El problema:</strong> Demoras operativas en la calificación manual de leads comerciales para bicicletas y kits eléctricos.</p>
+              <p><strong>La solución:</strong> Arquitectura de un flujo automatizado integrando lógica de nodos en n8n con un setter impulsado por Claude para filtrado en tiempo real.</p>
+              <div class="metrics-tag">Stack: n8n + Claude AI + CRM Logic</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NODO 2: CAMPAÑA POLÍTICA -->
+      <div class="node" onclick="toggleNode(this)">
+        <div class="node-header">
+          <h2 class="node-title">Editorial & Campaign Strategy</h2>
+          <span class="node-role">Political Account (6k Followers)</span>
+        </div>
+        <div class="node-body">
+          <div class="node-inner">
+            <div class="node-content">
+              <p><strong>El enfoque:</strong> Reestructuración del sistema de publicación con una ejecución <em>end-to-end</em>: desde el diseño de la estrategia de retención inicial, hasta la edición técnica de video, musicalización y redacción de copy.</p>
+              
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <div class="metric-value">+2.000</div>
+                  <div class="metric-label">Nuevos Seg. (6 Meses)</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-value">28.0k</div>
+                  <div class="metric-label">Pico Visualizaciones</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-value">17s</div>
+                  <div class="metric-label">Retención Prom.</div>
+                </div>
+              </div>
+              <div class="metrics-tag">Resultado: Crecimiento de un 50% de la comunidad base de forma orgánica</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NODO 3: DARITA STORE -->
+      <div class="node" onclick="toggleNode(this)">
+        <div class="node-header">
+          <h2 class="node-title">Darita Store</h2>
+          <span class="node-role">Community Building & Organic Growth</span>
+        </div>
+        <div class="node-body">
+          <div class="node-inner">
+            <div class="node-content">
+              <p><strong>El desafío:</strong> Lanzamiento y validación de marca desde cero, encontrando el nicho y construyendo una comunidad de compradores genuina sin pauta publicitaria.</p>
+              <p><strong>La ejecución:</strong> Desarrollo de contenido orgánico constante para identificar al público objetivo y estructurar la oferta comercial mediante bundling.</p>
+              
+              <div class="metrics-grid">
+                <div class="metric-card">
+                  <div class="metric-value">80 &rarr; 600</div>
+                  <div class="metric-label">Crecimiento Seg.</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-value">4.8k</div>
+                  <div class="metric-label">Pico Visualizaciones</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-value">0</div>
+                  <div class="metric-label">Inversión en Ads</div>
+                </div>
+              </div>
+              <div class="metrics-tag">Resultado: Validación de nicho y récord de ticket promedio</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div style="margin-top: 64px; padding-left: 28px;">
+      <a href="#" onclick="copyEmail(event)" id="email-btn" style="color: var(--text-main); font-weight: 500; text-decoration: none; border-bottom: 1px solid var(--text-main); padding-bottom: 2px; transition: color 0.3s ease;">
+        andicarrizo5@gmail.com &rarr;
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleNode(element) {
+      element.classList.toggle('active');
+    }
+
+    function copyEmail(e) {
+      e.preventDefault();
+      navigator.clipboard.writeText("andicarrizo5@gmail.com").then(() => {
+        const btn = document.getElementById("email-btn");
+        btn.innerHTML = "¡Correo copiado! &check;";
+        btn.style.color = "#00c950";
+        setTimeout(() => {
+          btn.innerHTML = "andicarrizo5@gmail.com &rarr;";
+          btn.style.color = "var(--text-main)";
+        }, 2500);
+      });
+    }
+  </script>
+
+</body>
+</html>
